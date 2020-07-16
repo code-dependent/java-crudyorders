@@ -5,6 +5,7 @@ import local.jlwilliams.orders.models.Customer;
 import local.jlwilliams.orders.models.Order;
 import local.jlwilliams.orders.repositories.AgentRepository;
 import local.jlwilliams.orders.repositories.CustomerRepository;
+import local.jlwilliams.orders.repositories.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,9 @@ public class CustomerServiceImpl
 {
     @Autowired
     private CustomerRepository customerrepos;
+
+    @Autowired
+    private OrderRepository orderrepos;
 
     @Override
     public Customer save(Customer customer)

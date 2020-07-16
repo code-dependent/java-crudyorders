@@ -5,11 +5,13 @@ import local.jlwilliams.orders.models.Order;
 import local.jlwilliams.orders.models.Payment;
 import local.jlwilliams.orders.repositories.CustomerRepository;
 import local.jlwilliams.orders.repositories.OrderRepository;
+import local.jlwilliams.orders.repositories.PaymentRepository;
 import local.jlwilliams.orders.views.AdvanceOrders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service(value = "orderService")
@@ -18,6 +20,19 @@ public class OrderServiceImpl
 {
     @Autowired
     private OrderRepository orderrepos;
+
+    @Autowired
+    private PaymentRepository paymentrepos;
+
+    @Override
+    public List<Order> listOrders()
+    {
+        List<Order> rtn = new ArrayList<>();
+        orderrepos.findAll()
+                .iterator()
+                .forEachRemaining(rtn::add);
+        return rtn;
+    }
 
     @Override
     public Order save(Order order)
@@ -38,7 +53,8 @@ public class OrderServiceImpl
 
         rtn.getPayments().clear();
         for(Payment p: order.getPayments()){
-            Payment newPay = new Payment(p.getType());
+            Payment newPay = paymentrepos.findById(p.getPaymentid())
+                    .orElseThrow(()-> new EntityNotFoundException("Payment ID " + p.getPaymentid() + " Not Found..."));
             rtn.getPayments().add(newPay);
         }
 

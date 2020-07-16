@@ -13,7 +13,7 @@ public class Customer
 {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-//    @Column(nullable = false)
+    @Column(nullable = false)
     private long custcode;
 
     @Column(nullable = false)

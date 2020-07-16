@@ -22,6 +22,12 @@ public class OrderController
     @Autowired
     private OrderServices orderService;
 
+    @GetMapping(value = "/orders", produces = {"application/json"})
+    public ResponseEntity<?> findOrders(){
+        List<Order> rtn = orderService.listOrders();
+        return new ResponseEntity<>(rtn, HttpStatus.OK);
+    }
+
     @GetMapping(value = "/order/{id}", produces = {"application/json"})
     public ResponseEntity<?> findOrderById(@PathVariable long id){
         Order rtn = orderService.findOrderById(id);
@@ -37,12 +43,12 @@ public class OrderController
     @PostMapping(value = "/order", consumes = {"application/json"})
     public ResponseEntity<?> postOrder(@Valid @RequestBody Order newOrder){
         newOrder.setOrdnum(0);
-        orderService.save(newOrder);
+        newOrder = orderService.save(newOrder);
         HttpHeaders responseHeaders = new HttpHeaders();
 
         URI orderURI = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .path("/{ordnum}")
+                .path("/{ordernum}")
                 .buildAndExpand(newOrder.getOrdnum())
                 .toUri();
 

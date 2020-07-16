@@ -14,4 +14,6 @@ public interface OrderServices
     List<AdvanceOrders> listAdvanceOrders();
 
     void delete(long id);
+
+    List<Order> listOrders();
 }
